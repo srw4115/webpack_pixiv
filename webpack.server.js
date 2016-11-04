@@ -5,7 +5,7 @@ const WebpackDevServer = require("webpack-dev-server");
 const compiler = webpack(config);
 const serverConfig = {
     proxy: {
-        '/pixiv': "http://127.0.0.1:9000/"
+        '/pixiv': "http://127.0.0.1:9101/"
     }
 };
 
