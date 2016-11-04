@@ -1,24 +1,23 @@
-var http = require("http");
+const http = require("http");
 
 const pixivDailyRanking = require("./pixiv.ranking.js");
-var List = [];
+var  List = [];
+var  requestEnd = false;
 
 
 
-function initLinks() {
+function initLinks(response) {
+	
     pixivDailyRanking().then(links => {
         List = links;
+        response.end(JSON.stringify(List));
     });
 }
 
-initLinks();
-
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
     response.writeHead(200, { "Content-Type": "text/plain" });
 
-    initLinks();
-
-    response.end(JSON.stringify(List));
+    initLinks(response);
 
 }).listen(9000);
 
