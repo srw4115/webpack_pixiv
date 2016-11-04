@@ -23,6 +23,8 @@
         "got": "^6.2.0"
     },
     "scripts": {
-        "start": "webpack --progress --colors --watch"
+        "start": "webpack --progress --colors --watch",
+        "server": "node  webpack.server.js",
+        "pixiv": "node pixiv.server.js"
     }
 }
