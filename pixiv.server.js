@@ -1,16 +1,11 @@
 const http = require("http");
 
 const pixivDailyRanking = require("./pixiv.ranking.js");
-var  List = [];
-var  requestEnd = false;
-
-
 
 function initLinks(response) {
-	
+
     pixivDailyRanking().then(links => {
-        List = links;
-        response.end(JSON.stringify(List));
+        response.end(JSON.stringify(links));
     });
 }
 
