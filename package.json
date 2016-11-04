@@ -24,7 +24,6 @@
   },
   "scripts": {
     "start": "webpack --progress --colors --watch",
-    "server": "concurrently --kill-others \"node webpack.server.js\" \"node pixiv.server.js\"",
-    "pixiv": "node pixiv.server.js"
+    "server": "concurrently --kill-others \"node webpack.server.js\" \"node pixiv.server.js\""
   }
 }
