@@ -1,10 +1,10 @@
-const AppReducer = (state = [], action) => {
-    switch (action.type) {
-        case "SEARCH_LIST":
-            return state = action.list
-        default:
-            return state
-    }
-};
+import { combineReducers } from 'redux'
+import pixivList from './pixivList.reducer.js'
+import userIcon from './UserIcon.reducer.js'
 
-export default AppReducer
+const App = combineReducers({
+	pixivList,
+	userIcon
+});
+
+export default App

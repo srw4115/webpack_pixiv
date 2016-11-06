@@ -1,5 +1,8 @@
 import fetch from "isomorphic-fetch"
 
+export function getUserIcon(link) {
+    return fetchData("/userIcon?link=" + encodeURIComponent(link));
+}
 
 export function findPixivList() {
     return fetchData("/pixiv");

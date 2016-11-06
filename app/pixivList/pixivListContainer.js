@@ -6,7 +6,7 @@ import { findPixivList } from "../actions/fetchData.action.js"
 import pixivList from "./index.js"
 
 const mapStateToProps = (state) => ({
-    list: state
+    list: state.pixivList
 });
 
 const mapDispatchToProps = (dispatch) => ({
