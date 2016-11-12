@@ -16,9 +16,11 @@ class pixivList extends React.Component {
 
         let { list } = this.props;
 
-        const listNodes = list.map((data) => {
+        if(!list.contents) return null;
+
+        const listNodes = list.contents.map((data) => {
             return (
-                <ImageBox data={data} key={data.id}/>
+                <ImageBox data={data} key={data.illust_id}/>
             );
         });
 

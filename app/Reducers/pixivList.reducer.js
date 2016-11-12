@@ -1,4 +1,4 @@
-const AppReducer = (state = [], action) => {
+const AppReducer = (state = {}, action) => {
     switch (action.type) {
         case "SEARCH_LIST":
             return state = action.list

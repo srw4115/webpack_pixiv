@@ -5,8 +5,8 @@ const Image = ({ data }) => {
     return (
         <div className="pixiv-list-item">
     		<img src={data.url} />
-    		<p>{data.user.userName}</p>
-    		<UserIcon data={data.user}/>
+    		<p>{data.user_name}</p>
+    		<UserIcon data={data}/>
     	</div>
     )
 };

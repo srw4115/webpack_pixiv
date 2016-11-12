@@ -1,40 +1,77 @@
 const http = require("http");
+const Stream = require('stream').Transform;
 const url = require('url');
+const fs = require('fs');
 
-const pixivDailyRanking = require("./pixiv.ranking.js");
+function downloadImage(appRequest, appResponse) {
 
-function downloadIconImage(appRequest, appResponse) {
+    const linkData = url.parse(appRequest.url, true);
+    const link = url.parse(linkData.query.link, true);
 
-    var request = require('request').defaults({ encoding: null });
+    const options = {
+        hostname: link.host,
+        path: link.path,
+        headers: {
+            "Referer": "http://www.pixiv.net/"
+        }
+    };
 
-    var linkData = url.parse(appRequest.url, true);
-    
-    request.get(linkData.query.link, {
-            headers: { referer: "http://www.pixiv.net/" }
-        },
-        function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString("base64");
-                appResponse.end(JSON.stringify(data));
-            }
+    http.get(options, (response) => {
+
+        response.setEncoding('binary');
+
+        var body = "";
+
+        response.on('data', (data) => {
+            body += data;
         });
-}
 
-function initLinks(response) {
-    response.writeHead(200, { "Content-Type": "text/plain" });
-    pixivDailyRanking().then(links => {
-        response.end(JSON.stringify(links));
+        response.on('end', () => {
+
+            data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body, "binary").toString("base64");
+
+            appResponse.end(JSON.stringify(data));
+        })
     });
 }
 
-http.createServer(function (request, response) {
 
-    if (request.url == "/pixiv") {
-        initLinks(response);
+function getPixivList(appRequest, appResponse) {
+
+    const linkData = url.parse(appRequest.url, true);
+
+    var options = {
+        hostname: "www.pixiv.net",
+        path: "/ranking.php?p=" + linkData.query.page + "&format=json",
+        headers: {
+            "Referer": "http://www.pixiv.net/",
+            "Content-Type": "application/json"
+        }
+    };
+
+    http.get(options, (response) => {
+
+        var body = '';
+
+        response.on('data', (data) => {
+            body += data;
+        });
+
+        response.on('end', () => {
+            appResponse.end(body);
+        })
+    });
+}
+
+
+http.createServer((request, response) => {
+
+    if (request.url.match("/pixiv")) {
+        getPixivList(request, response);
     }
 
     if (request.url.match("/userIcon")) {
-        downloadIconImage(request, response);
+        downloadImage(request, response);
     }
 
 }).listen(9101);

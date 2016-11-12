@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { getUserIcon } from "../actions/fetchData.action.js"
 
 class UserIcon extends React.Component {
-	
+
     componentWillMount() {
         this.imgUrl = null;
     };
@@ -37,11 +37,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     "setIcon": (data, callback) => {
-        dispatch(getUserIcon(data.profileImg)).then((response) => {
+        dispatch(getUserIcon(data.profile_img)).then((response) => {
             callback(response.data);
             dispatch({
                 type: "SET_USER_ICON",
-                iconData: { id: data.userId, icon: response.data }
+                iconData: { id: data.user_id, icon: response.data }
             });
         });
     }
