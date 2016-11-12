@@ -4,6 +4,8 @@ import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
 import thunkMiddleware from "redux-thunk"
 
+import "./css/app.less"
+
 import MainContent from "./pixivList/pixivListContainer.js"
 import appReducer from "./Reducers/app.reducer.js"
 

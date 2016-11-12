@@ -1,3 +1,5 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
     entry: {
         app: ["./index"]
@@ -7,7 +9,7 @@ module.exports = {
         path: __dirname + "/build"
     },
     plugins: [
-
+        new ExtractTextPlugin("[name].css")
     ],
     devtool: "inline-source-map",
     module: {
@@ -19,11 +21,8 @@ module.exports = {
                 presets: ["es2015", "react"]
             },
         }, {
-            test: /\.css$/,
-            loader: "style!css"
-        }, {
             test: /\.less$/,
-            loader: 'style!less'
+            loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap!less?sourceMap')
         }]
     }
 };
