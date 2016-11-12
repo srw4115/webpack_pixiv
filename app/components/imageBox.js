@@ -4,9 +4,15 @@ import UserIcon from "./userIcon.js"
 const Image = ({ data }) => {
     return (
         <div className="pixiv-list-item">
-    		<img src={data.url} />
-    		<p>{data.user_name}</p>
-    		<UserIcon data={data}/>
+    		<div className="imageContainer">
+    			<img src={data.url} />
+    			<p>{data.title}</p>
+    		</div>
+    		<hr/>
+    		<div className="itemInfo">
+	    		<UserIcon className="icon" data={data}/>
+	    		<span className="userName">{data.user_name}</span>
+    		</div>
     	</div>
     )
 };
