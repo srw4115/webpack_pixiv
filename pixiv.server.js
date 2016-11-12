@@ -1,7 +1,5 @@
 const http = require("http");
-const Stream = require('stream').Transform;
 const url = require('url');
-const fs = require('fs');
 
 function downloadImage(appRequest, appResponse) {
 
