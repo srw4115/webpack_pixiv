@@ -4,8 +4,9 @@ export function getUserIcon(link) {
     return fetchData("/userIcon?link=" + encodeURIComponent(link));
 }
 
-export function findPixivList() {
-    return fetchData("/pixiv?page=1");
+export function findPixivList(page) {
+    page = page || 1;
+    return fetchData("/pixiv?page=" + page);
 };
 
 function fetchData(url) {

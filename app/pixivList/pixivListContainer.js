@@ -9,10 +9,17 @@ const mapStateToProps = (state) => ({
     list: state.pixivList
 });
 
+let isSearching = false;
+
 const mapDispatchToProps = (dispatch) => ({
-    "dispatchSearchList": () => {
-        dispatch(findPixivList()).then((response) => {
+    "dispatchSearchList": (page) => {
+        if (isSearching) return;
+
+        isSearching = true;
+
+        dispatch(findPixivList(page)).then((response) => {
             dispatch({ type: "SEARCH_LIST", list: response.data })
+            isSearching = false;
         })
     }
 });
