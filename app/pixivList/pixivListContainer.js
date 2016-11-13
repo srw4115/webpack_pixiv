@@ -9,21 +9,6 @@ const mapStateToProps = (state) => ({
     list: state.pixivList
 });
 
-let isSearching = false;
-
-const mapDispatchToProps = (dispatch) => ({
-    "dispatchSearchList": (page) => {
-        if (isSearching) return;
-
-        isSearching = true;
-
-        dispatch(findPixivList(page)).then((response) => {
-            dispatch({ type: "SEARCH_LIST", list: response.data })
-            isSearching = false;
-        })
-    }
-});
-
-const content = connect(mapStateToProps, mapDispatchToProps)(pixivList);
+const content = connect(mapStateToProps)(pixivList);
 
 export default content
