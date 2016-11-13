@@ -12,9 +12,9 @@ class UserIcon extends React.Component {
 
         let { data, iconData, setIcon } = this.props;
 
-        if (!iconData && !this.imgUrl) {
+        if (!this.imgUrl) {
             setIcon(data, (icon) => {
-                this.imgUrl = icon;
+                this.imgUrl = icon
             });
         }
     };
