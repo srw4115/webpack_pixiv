@@ -10,18 +10,21 @@ import MainContent from "./pixivList/pixivListContainer.js"
 import Toolbar from "./components/toolbar.js"
 import appReducer from "./Reducers/app.reducer.js"
 
-class App {
-    constructor() {
-        const store = createStore(appReducer, applyMiddleware(thunkMiddleware));
-        ReactDOM.render(
-            <Provider store={store}>
-            	<div>
-        			<MainContent />
-        			<Toolbar />
-        		</div>
-        	</Provider>,
-            document.querySelector(".app")
-        );
+class App extends React.Component {
+    componentWillMount() {
+        this.store = createStore(appReducer, applyMiddleware(thunkMiddleware));
+    }
+
+    render() {
+        
+        return (
+            <Provider store={this.store}>
+                <div>
+                    <MainContent />
+                    <Toolbar />
+                </div>
+            </Provider>
+        )
 
     }
 };
