@@ -1,10 +1,10 @@
 const http = require("http");
 const url = require('url');
 
-function downloadImage(appRequest, appResponse) {
 
-    const linkData = url.parse(appRequest.url, true);
-    const link = url.parse(linkData.query.link, true);
+function downloadImage(dataLink, appResponse, isEnableCache) {
+
+    const link = url.parse(dataLink, true);
 
     const options = {
         hostname: link.host,
@@ -13,6 +13,7 @@ function downloadImage(appRequest, appResponse) {
             "Referer": "http://www.pixiv.net/"
         }
     };
+
 
     http.get(options, (response) => {
 
@@ -28,9 +29,17 @@ function downloadImage(appRequest, appResponse) {
 
             data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body, "binary").toString("base64");
 
-            appResponse.end(JSON.stringify(data));
+            if(response.statusCode == "200"){
+                appResponse.end(data);
+            }
         })
     });
+}
+
+function downLoadIcon(appRequest, appResponse) {
+    const linkData = url.parse(appRequest.url, true);
+    const link = linkData.query.link;
+    downloadImage(link, appResponse, true);
 }
 
 
@@ -61,6 +70,14 @@ function getPixivList(appRequest, appResponse) {
     });
 }
 
+function getDetailImage(appRequest, appResponse) {
+    const linkData = url.parse(appRequest.url, true);
+    var  link = linkData.query.link;
+    link = link.replace(/c.*?img-master/g, 'img-original').replace(/_master.*?\.jpg/g, '.');
+
+    downloadImage(link + 'png', appResponse);
+    downloadImage(link + 'jpg', appResponse);
+}
 
 http.createServer((request, response) => {
 
@@ -68,8 +85,12 @@ http.createServer((request, response) => {
         getPixivList(request, response);
     }
 
-    if (request.url.match("/userIcon")) {
-        downloadImage(request, response);
+    if (request.url.match("/downLoadImage")) {
+        downLoadIcon(request, response);
+    }
+
+    if (request.url.match("/detailImage")) {
+        getDetailImage(request, response);
     }
 
 }).listen(9101);

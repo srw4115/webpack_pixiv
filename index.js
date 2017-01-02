@@ -1,14 +1,31 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { Router, Route, Link, hashHistory } from "react-router"
+import { createStore, applyMiddleware } from "redux"
+import { Provider } from "react-redux"
+import thunkMiddleware from "redux-thunk"
+import { Router, Route, Link, browserHistory } from "react-router"
+
+
+import "./app/css/app.less"
+
+import appReducer from "./app/Reducers/app.reducer.js"
+
+
 
 import App from "./app/app.js"
+import ImageDetail from "./app/imageDetail/index.js"
 
 
-let content = (
-    <Router  history={hashHistory}>
-	    <Route path="/" component={App} />
-	</Router>
+
+const store = createStore(appReducer, applyMiddleware(thunkMiddleware));
+
+const content = (
+	<Provider store={store}>
+	    <Router  history={browserHistory}>
+		    <Route path="/" component={App} />
+		    <Route path="/imageDetail/:url/count/:count" component={ImageDetail} />
+		</Router>
+    </Provider>		
 );
 
 ReactDOM.render(content, document.querySelector(".app"));

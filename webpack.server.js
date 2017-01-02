@@ -6,7 +6,8 @@ const compiler = webpack(config);
 const serverConfig = {
     proxy: {
         "/pixiv": "http://127.0.0.1:9101/",
-        "/userIcon": "http://127.0.0.1:9101/"
+        "/downLoadImage": "http://127.0.0.1:9101/",
+        "/detailImage": "http://127.0.0.1:9101/"
     }
 };
 

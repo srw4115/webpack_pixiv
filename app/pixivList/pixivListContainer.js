@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux"
-import { findPixivList } from "../actions/fetchData.action.js"
 
 import pixivList from "./index.js"
 

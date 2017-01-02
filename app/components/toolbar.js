@@ -7,14 +7,23 @@ class Toolbar extends React.Component {
 
     componentDidMount() {
 
-        const { dispatchSearchList } = this.props;
+        const { dispatchSearchList, data } = this.props;
 
-        dispatchSearchList();
+        if (!data.page) {
+            dispatchSearchList();
+        }
 
         this.autoPaging();
     }
 
+    componentWillUnmount() {
+        window.onscroll = null;
+    }
+
     autoPaging() {
+
+        const { data } = this.props;
+
         window.onscroll = () => {
             const bodyBounding = document.body.getBoundingClientRect();
             const { dispatchSearchList, data } = this.props;
@@ -33,11 +42,11 @@ class Toolbar extends React.Component {
 
         const content = (
             <div className="pixiv-list-toolbar">
-        		<div className="toolbar_switch"></div>
-        		<div className="toolbar_content">
-        			<span>page: {data.page}</span>
-        		</div>
-        	</div>
+                <div className="toolbar_switch"></div>
+                <div className="toolbar_content">
+                    <span className="page">page: {data.page}</span>
+                </div>
+            </div>
         );
 
         return content;
