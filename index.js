@@ -10,12 +10,8 @@ import "./app/css/app.less"
 
 import appReducer from "./app/Reducers/app.reducer.js"
 
-
-
 import App from "./app/app.js"
 import ImageDetail from "./app/imageDetail/index.js"
-
-
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware));
 
@@ -23,7 +19,7 @@ const content = (
 	<Provider store={store}>
 	    <Router  history={browserHistory}>
 		    <Route path="/" component={App} />
-		    <Route path="/imageDetail/:url/count/:count" component={ImageDetail} />
+		    <Route path="/imageDetail/:illustId" component={ImageDetail} />
 		</Router>
     </Provider>		
 );

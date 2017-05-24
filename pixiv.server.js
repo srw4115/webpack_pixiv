@@ -1,4 +1,5 @@
-const http = require("http");
+const http = require('http');
+const https = require('https');
 const url = require('url');
 
 
@@ -10,7 +11,7 @@ function downloadImage(dataLink, appResponse, isEnableCache) {
         hostname: link.host,
         path: link.path,
         headers: {
-            "Referer": "http://www.pixiv.net/"
+            'Referer': 'http://www.pixiv.net/'
         }
     };
 
@@ -27,9 +28,10 @@ function downloadImage(dataLink, appResponse, isEnableCache) {
 
         response.on('end', () => {
 
-            data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body, "binary").toString("base64");
+            data = new Buffer(body, 'binary');
 
-            if(response.statusCode == "200"){
+            if(response.statusCode == '200'){
+                appResponse.setHeader('cache-control','private, max-age=31536000');
                 appResponse.end(data);
             }
         })
@@ -37,8 +39,8 @@ function downloadImage(dataLink, appResponse, isEnableCache) {
 }
 
 function downLoadIcon(appRequest, appResponse) {
-    const linkData = url.parse(appRequest.url, true);
-    const link = linkData.query.link;
+    const host = 'http://i.pximg.net';
+    const link = appRequest.url.replace(/(\/userIcon)/g, host);
     downloadImage(link, appResponse, true);
 }
 
@@ -48,15 +50,14 @@ function getPixivList(appRequest, appResponse) {
     const linkData = url.parse(appRequest.url, true);
 
     var options = {
-        hostname: "www.pixiv.net",
-        path: "/ranking.php?p=" + linkData.query.page + "&format=json",
+        hostname: 'www.pixiv.net',
+        path: '/ranking.php?p=' + linkData.query.page + '&format=json',
         headers: {
-            "Referer": "http://www.pixiv.net/",
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
         }
     };
 
-    http.get(options, (response) => {
+    https.get(options, (response) => {
 
         var body = '';
 
@@ -71,8 +72,9 @@ function getPixivList(appRequest, appResponse) {
 }
 
 function getDetailImage(appRequest, appResponse) {
-    const linkData = url.parse(appRequest.url, true);
-    var  link = linkData.query.link;
+    const host = 'http://i.pximg.net';
+    var link = appRequest.url.replace(/(\/detailImage)/g, host);
+    
     link = link.replace(/c.*?img-master/g, 'img-original').replace(/_master.*?\.jpg/g, '.');
 
     downloadImage(link + 'png', appResponse);
@@ -81,18 +83,18 @@ function getDetailImage(appRequest, appResponse) {
 
 http.createServer((request, response) => {
 
-    if (request.url.match("/pixiv")) {
+    if (request.url.match('/pixiv')) {
         getPixivList(request, response);
     }
 
-    if (request.url.match("/downLoadImage")) {
+    if (request.url.match('/userIcon')) {
         downLoadIcon(request, response);
     }
 
-    if (request.url.match("/detailImage")) {
+    if (request.url.match('/detailImage')) {
         getDetailImage(request, response);
     }
 
 }).listen(9101);
 
-console.log("Server running at http://127.0.0.1:9101/");
+console.log('Server running at http://127.0.0.1:9101/');

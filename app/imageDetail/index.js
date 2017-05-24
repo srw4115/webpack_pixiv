@@ -1,32 +1,38 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { getPixivImage, fetchDetailImage } from "../actions/fetchData.action.js"
 import { Router, Route, Link } from 'react-router'
+import { connect } from "react-redux"
 
 class ImageDetail extends React.Component {
-    componentDidMount() {
+    componentWillMount() {
+        const params = this.props.router.params;
+        const illustId = params.illustId;
+        const illustList = this.props.list;
+        const illust = illustList.contents.filter(function (item) {
+            return item.illust_id == illustId;
+        });
 
-        var params = this.props.router.params;
-
-        fetchDetailImage(params.url, params.count)
-            .then((data) => {
-            	if(data){
-            		this.setState({ img: data });
-            	}
-            })
+        this.setState({ illust: illust[0]});
     }
 
     render() {
+        const illust = this.state.illust;
+        
+        if(!illust) return null;
 
         return (
             <div>
-				{this.state && this.state.img &&
-					<img src={this.state.img} />
-				}
-        		<Link to="/">back</Link>
-        	</div>
+                <img src={illust.url_path} />
+                <Link to="/">back</Link>
+            </div>
         );
     }
 }
 
-export default ImageDetail
+const mapStateToProps = (state) => ({
+    list: state.pixivList
+});
+
+const content = connect(mapStateToProps)(ImageDetail);
+
+export default content

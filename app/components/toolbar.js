@@ -55,6 +55,7 @@ class Toolbar extends React.Component {
 
 
 let isFetching = false;
+
 const mapDispatchToProps = (dispatch) => ({
     "dispatchSearchList": (page) => {
         if (isFetching) return;

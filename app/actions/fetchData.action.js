@@ -1,8 +1,5 @@
 import fetch from "isomorphic-fetch"
 
-export function getPixivImage(link) {
-    return fetchText("/downLoadImage?link=" + encodeURIComponent(link));
-}
 
 export function fetchDetailImage(url,count) {
     url = "/detailImage?link=" + url + "&count=" + count;

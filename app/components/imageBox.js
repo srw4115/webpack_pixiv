@@ -12,10 +12,10 @@ class Image extends React.Component {
     render() {
 
         const { data } = this.props;
-        const url = "/imageDetail/" +  encodeURIComponent(data.url) + "/count/" + data.illust_page_count;
+        const url = "/imageDetail/" +  data.illust_id;
 
         return (
-            <div className="pixiv-list-item" data-id={data.illust_id} data-count={data.illust_page_count}>
+            <div className="pixiv-list-item" data-id={data.illust_id}>
                 <div className="imageContainer">
                     <Link  name={data.illust_id} to={url}>
                         <img src={data.url}/>
@@ -30,6 +30,6 @@ class Image extends React.Component {
             </div>
         )
     }
-};
+}
 
 export default Image
